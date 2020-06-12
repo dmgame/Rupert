@@ -15,7 +15,7 @@ const workBooksStore = {
     workbooks: {},
     workbooksIsLoading: false,
     selectedWorkBookId: '',
-    workbookFilters: [], // [[field, value]]
+    workbookFilters: [],
   },
   getters: {
     workbooks: ({ workbooks }) => Object.values(workbooks),

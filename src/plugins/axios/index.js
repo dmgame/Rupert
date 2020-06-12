@@ -3,7 +3,7 @@ import initInterceptors from './interceptors';
 
 const instance = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
-  timeout: 10000,
+  timeout: 20000,
   headers: { 'Content-Type': 'application/json' },
 });
 
