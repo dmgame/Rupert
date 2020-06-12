@@ -8,6 +8,7 @@
         <WorkBookListItem
           :key="item.id"
           :workbook="item"
+          :selectedWorkbookId="selectedWorkBookId"
           @selectItem="onItemSelected"
         />
       </template>
@@ -40,7 +41,7 @@ export default {
     EmptyMessageBlock,
   },
   computed: {
-    ...mapGetters('workbooks', ['workbooks', 'workbookFilters']),
+    ...mapGetters('workbooks', ['workbooks', 'workbookFilters', 'selectedWorkBookId']),
     workbooksList() {
       if (!this.workbookFilters.length) return this.workbooks;
 

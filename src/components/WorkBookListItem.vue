@@ -1,5 +1,11 @@
 <template>
-  <div class="workbook-list-item" @mouseenter="onItemHover">
+  <div
+    class="workbook-list-item"
+    :class="itemClasses"
+    @mouseenter="onItemHover"
+    @mouseleave="onMouseLeave"
+    @click="selectItem"
+  >
     <div class="workbook-list-item__info">
       <span class="workbook-list-item__name">{{ workbook.name }}</span>
       <div class="workbook-list-item__additional-info">
@@ -26,14 +32,39 @@ export default {
       type: Object,
       required: true,
     },
+    selectedWorkbookId: {
+      type: String,
+      default: '',
+    },
   },
   components: {
     LinkButton,
   },
+  data: () => ({
+    $debounced: null,
+  }),
+  computed: {
+    itemClasses() {
+      return {
+        selected: this.selectedWorkbookId === this.workbook.id,
+      };
+    },
+  },
   methods: {
-    onItemHover: debounce(function () {
+    onItemHover() {
+      this.$debounced = debounce(() => {
+        this.selectItem();
+      }, 2000);
+      return this.$debounced();
+    },
+    onMouseLeave() {
+      if (this.$debounced) {
+        this.$debounced.cancel();
+      }
+    },
+    selectItem() {
       this.$emit('selectItem', this.workbook.id);
-    }, 1000),
+    },
   },
 };
 </script>
@@ -49,8 +80,9 @@ export default {
   align-items: center;
   transition: all 0.2s ease-in;
   justify-content: space-between;
+  cursor: pointer;
 
-  &:hover {
+  &:hover, &.selected {
     background: linear-gradient(90deg, #FFFFFF -5.88%, rgba(255, 255, 255, 0) 16.27%), #F5F6FF;
 
     & .asset-link {
