@@ -4,6 +4,12 @@
       <EmptyMessageBlock msg="No workbooks" />
     </template>
     <template v-else>
+      <div class="workbook-list__head">
+        <div class="workbook-list__head-item"></div>
+        <div class="workbook-list__head-item">Owner</div>
+        <div class="workbook-list__head-item">Sheet count</div>
+        <div class="workbook-list__head-item">Assets</div>
+      </div>
       <template v-for="item in workbooksList">
         <WorkBookListItem
           :key="item.id"
@@ -42,6 +48,7 @@ export default {
   },
   computed: {
     ...mapGetters('workbooks', ['workbooks', 'workbookFilters', 'selectedWorkBookId']),
+    ...mapGetters('auth', ['siteId']),
     workbooksList() {
       if (!this.workbookFilters.length) return this.workbooks;
 
@@ -56,7 +63,7 @@ export default {
   methods: {
     ...mapActions('workbooks', ['selectWorkBook']),
     onItemSelected(id) {
-      this.selectWorkBook(id);
+      this.selectWorkBook({ workbookId: id, siteId: this.siteId });
     },
   },
 };
@@ -66,5 +73,20 @@ export default {
 .workbook-list {
   padding-top: 10px;
   padding-left: 16px;
+
+  &__head {
+    display: grid;
+    grid-template-columns: 70% 10% 10% 10%;
+    padding: 0 30px;
+    margin-bottom: 10px;
+
+    &-item {
+      font-size: 9px;
+      line-height: 12px;
+      letter-spacing: 0.1em;
+      color: #828282;
+      text-align: center;
+    }
+  }
 }
 </style>

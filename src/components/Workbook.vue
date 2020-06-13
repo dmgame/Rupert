@@ -84,7 +84,6 @@ export default {
   }
 
   &__load-button {
-    margin-bottom: 15px;
     padding-left: 30px;
   }
 

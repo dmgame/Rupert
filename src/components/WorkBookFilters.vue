@@ -1,14 +1,14 @@
 <template>
   <div class="filters-wrap">
     <div class="filters-info">
-      <img src="@/assets/images/search-icon.png" alt="">
+      <img src="@/assets/images/search-icon.png" alt="Search icon">
       <span class="filters-info__text">Filters</span>
       <div
         class="toggle-filters"
         @click="toggleFilters"
         :class="toggleButtonClasses"
       >
-        <img src="@/assets/images/arrow-down.png" alt="">
+        <img src="@/assets/images/arrow-down.png" alt="Arrow icon">
       </div>
     </div>
     <div class="filters-controls" v-if="!filtersCollapsed">

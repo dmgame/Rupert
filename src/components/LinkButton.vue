@@ -29,5 +29,6 @@ export default {
   display: inline-block;
   cursor: pointer;
   padding: 5px 20px;
+  text-align: center;
 }
 </style>

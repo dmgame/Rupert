@@ -1,5 +1,5 @@
 import mutations from '@/store/mutations';
-import { getWorkbooks } from '../../services/workbook.service';
+import { getWorkbooks, getWorkbookViews } from '@/services/workbook.service';
 
 const {
   WORKBOOKS,
@@ -7,6 +7,7 @@ const {
   SELECT_WORKBOOK,
   ADD_WORKBOOK_FILTERS,
   DELETE_WORKBOOK_FILTERS,
+  WORKBOOK_VIEWS,
 } = mutations;
 
 const workBooksStore = {
@@ -15,6 +16,8 @@ const workBooksStore = {
     workbooks: {},
     workbooksIsLoading: false,
     selectedWorkBookId: '',
+    selectedWorkBookViews: [],
+    selectedWorkBookImage: null,
     workbookFilters: [],
   },
   getters: {
@@ -22,6 +25,7 @@ const workBooksStore = {
     workbooksLoading: ({ workbooksIsLoading }) => workbooksIsLoading,
     selectedWorkBookId: ({ selectedWorkBookId }) => selectedWorkBookId,
     selectedWorkBook: ({ workbooks, selectedWorkBookId }) => workbooks[selectedWorkBookId] || null,
+    selectedWorkBookViews: ({ selectedWorkBookViews }) => selectedWorkBookViews,
     workbookFilters: ({ workbookFilters }) => workbookFilters,
   },
   mutations: {
@@ -34,6 +38,9 @@ const workBooksStore = {
     [SELECT_WORKBOOK](state, id) {
       state.selectedWorkBookId = id;
     },
+    [WORKBOOK_VIEWS](state, arr) {
+      state.selectedWorkBookViews = arr;
+    },
     [ADD_WORKBOOK_FILTERS](state, arr) {
       state.workbookFilters.push(arr);
     },
@@ -45,8 +52,15 @@ const workBooksStore = {
     toggleWorkBookLoader({ commit }, bool) {
       commit(WORKBOOKS_LOADER, bool);
     },
-    selectWorkBook({ commit }, id) {
-      commit(SELECT_WORKBOOK, id);
+    async selectWorkBook({ commit }, { workbookId, siteId }) {
+      try {
+        commit(SELECT_WORKBOOK, workbookId);
+        const res = await getWorkbookViews(siteId, workbookId);
+        commit(WORKBOOK_VIEWS, res);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
     },
     addWorkbookFilter({ commit }, filter) {
       commit(ADD_WORKBOOK_FILTERS, filter);
